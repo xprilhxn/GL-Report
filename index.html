@@ -797,6 +797,7 @@
           parseFloat(document.getElementById('avgLuar2B').textContent),
           parseFloat(document.getElementById('avgTengah2B').textContent),
           parseFloat(document.getElementById('avgDalam2B').textContent),
+          parseFloat(document.getElementById('avgTotal2B').textContent),
       ].map(val => isNaN(val) ? 0 : val);
       
       const ctx = document.getElementById('myChart').getContext('2d');
