@@ -31,16 +31,37 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
 
+    .main-header-container {
+      background: #f9f9f9;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      text-align: center;
+    }
+
+    .title-dropdown-container {
+        text-align: center;
+        width: 100%;
+        margin-bottom: 0;
+    }
+
     .header-form {
       display: flex;
       justify-content: center;
       gap: 20px;
-      margin-bottom: 25px;
       flex-wrap: wrap;
-      background: #f9f9f9;
-      padding: 15px;
-      border-radius: 8px;
+      width: 100%;
+      padding: 0;
+      border-radius: 0;
+      background: transparent;
+      margin-bottom: 0;
     }
+    
     .header-form label {
       font-weight: 600;
       color: #555;
@@ -65,16 +86,11 @@
       outline: none;
     }
 
-    /* CSS tambahan untuk meratakan judul dropdown di tengah */
-    .title-dropdown-container {
-        text-align: center;
-        margin-bottom: 25px;
-    }
     .title-dropdown-container #report-title-select {
         text-align-last: center;
         -moz-text-align-last: center;
         width: 100%;
-        max-width: 500px; /* Batasi lebar agar tidak terlalu besar di layar lebar */
+        max-width: 500px;
         padding: 0;
     }
 
@@ -115,6 +131,8 @@
     .btn-container {
       text-align: center;
       margin: 20px 0;
+      position: relative;
+      z-index: 10;
     }
     .dropbtn, .btn-container button {
       padding: 12px 25px;
@@ -141,15 +159,20 @@
         cursor: not-allowed;
     }
     
-    /* Reset Button */
-    #resetBtn {
+    .resetBtn {
       background: #dc3545;
     }
-    #resetBtn:hover {
+    .resetBtn:hover {
       background: #c82333;
     }
+    
+    #showChartsBtn {
+      background: #28a745;
+    }
+    #showChartsBtn:hover {
+      background: #218838;
+    }
 
-    /* Dropdown CSS */
     .dropdown {
         position: relative;
         display: inline-block;
@@ -192,27 +215,6 @@
       pointer-events: none;
     }
 
-    /* Watermark Container CSS */
-    #watermark-container {
-        position: relative;
-        height: 20px;
-        margin-top: -15px;
-        text-align: center;
-    }
-    .watermark {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: rgba(0, 0, 0, 0.5);
-        font-size: 10px;
-        font-family: 'Poppins', sans-serif;
-        white-space: nowrap;
-        pointer-events: none;
-        user-select: none;
-        z-index: 1000;
-    }
-
     .results {
       background: #f9f9f9;
       border: 1px solid #e0e0e0;
@@ -251,6 +253,36 @@
       border-radius: 8px;
     }
 
+    .control-chart-container {
+      height: 500px;
+      margin-top: 30px;
+      padding: 15px;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      background-color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+    .control-chart-canvas {
+        flex-grow: 1;
+        width: 100%;
+    }
+    
+    .chart-controls {
+        text-align: center;
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+    .chart-controls select {
+        padding: 8px 15px;
+        font-size: 14px;
+        border-radius: 6px;
+        border: 1px solid #ddd;
+    }
+    
     #desktop-content {
       display: block;
     }
@@ -274,6 +306,7 @@
       .report-table { font-size: 12px; }
       .results { font-size: 12px; }
       .container { padding: 15px; }
+      .main-header-container { flex-direction: column; align-items: stretch; gap: 10px; padding: 15px; }
       .header-form { flex-direction: column; align-items: stretch; gap: 10px; }
       .header-form label { justify-content: space-between; }
       #desktop-content {
@@ -286,40 +319,158 @@
         align-items: center;
       }
     }
+    
+    /* START: FITUR STANDAR BARU - CSS */
+    .standards-setting-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 2000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .standards-setting-container {
+        background: #ffffff;
+        padding: 30px;
+        border-radius: 12px;
+        max-width: 800px;
+        width: 90%;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+    .standards-setting-container h2 {
+        text-align: center;
+        color: #007bff;
+        margin-top: 0;
+    }
+    .standards-setting-container p {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .status-lulus {
+        font-weight: bold;
+        color: #1a2a44;
+        position: relative;
+    }
+    .status-gagal {
+        font-weight: bold;
+        color: #dc3545;
+        position: relative;
+    }
+    .status-lulus::after {
+        content: ' ✅';
+    }
+    .status-gagal::after {
+        content: ' ❌';
+    }
+    
+    .exclude-on-print {
+        display: block; /* Default state */
+    }
+
+    @media print {
+        #desktop-content {
+            display: block !important;
+        }
+
+        #mobile-warning {
+            display: none !important;
+        }
+        
+        .exclude-on-print {
+            display: none !important;
+        }
+
+        .container {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            box-shadow: none;
+            background: none;
+        }
+
+        .report-table {
+            font-size: 12px;
+            table-layout: auto;
+            border-spacing: 0;
+            width: 100%;
+        }
+
+        .report-table th, .report-table td {
+            padding: 2px 3px;
+        }
+
+        #report-content {
+            page-break-after: always;
+        }
+        
+        .results {
+            page-break-after: always;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+
+        .chart-container, .control-chart-container {
+            page-break-before: always;
+            border: none;
+            padding: 0;
+            height: auto;
+            max-height: 400px;
+            width: 100% !important;
+        }
+
+        .report-table, .results table {
+            page-break-inside: avoid;
+        }
+        
+        .results table {
+            font-size: 14px;
+        }
+    }
+    /* END: FITUR STANDAR BARU - CSS */
   </style>
 </head>
 <body>
   <div id="desktop-content">
     <div class="container">
       <div id="printable-area">
-        <div class="title-dropdown-container">
-          <label for="report-title-select">
-            <select id="report-title-select" style="font-size: 24px; font-weight: 700; border: none; background: transparent; text-align: center; color: #1a2a44;">
-              <option value="TOP GLAZE APPLICATION REPORT">TOP GLAZE APPLICATION REPORT</option>
-              <option value="ENGOBE APPLICATION REPORT">ENGOBE APPLICATION REPORT</option>
-            </select>
-          </label>
-        </div>
+        <div class="main-header-container">
+          <div class="title-dropdown-container">
+            <label for="report-title-select">
+              <select id="report-title-select" style="font-size: 24px; font-weight: 700; border: none; background: transparent; text-align: center; color: #1a2a44;">
+                <option value="TOP GLAZE APPLICATION REPORT">TOP GLAZE APPLICATION REPORT</option>
+                <option value="ENGOBE APPLICATION REPORT">ENGOBE APPLICATION REPORT</option>
+              </select>
+            </label>
+          </div>
   
-        <div class="header-form">
-          <label for="tanggal">Date:
-            <input type="date" id="tanggal">
-          </label>
+          <div class="header-form">
+            <label for="tanggal">Date:
+              <input type="date" id="tanggal">
+            </label>
   
-          <label for="grup">Group:
-            <select id="grup">
-              <option value="A">A</option>
-              <option value="B">B</option>
-              <option value="C">C</option>
-            </select>
-          </label>
+            <label for="grup">Group:
+              <select id="grup">
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+              </select>
+            </label>
   
-          <label for="shift">Shift:
-            <select id="shift">
-              <option value="1">Shift 1</option>
-              <option value="2">Shift 2</option>
-            </select>
-          </label>
+            <label for="shift">Shift:
+              <select id="shift">
+                <option value="1">Shift 1</option>
+                <option value="2">Shift 2</option>
+              </select>
+            </label>
+          </div>
         </div>
   
         <div id="report-content">
@@ -351,10 +502,6 @@
             </thead>
             <tbody id="table-body"></tbody>
           </table>
-        </div>
-        
-        <div id="watermark-container">
-          <div class="watermark" id="report-watermark"></div>
         </div>
   
         <div class="results" id="results">
@@ -405,28 +552,62 @@
               </tr>
             </tbody>
           </table>
-
+  
+          <div class="chart-controls exclude-on-print">
+              <label for="chart-param-select">Pilih Parameter Grafik: </label>
+              <select id="chart-param-select">
+                  <option value="All">All Parameters</option>
+                  <option value="Water">Water (g)</option>
+                  <option value="Density">Density (g)</option>
+                  <option value="Viscosity">Viscosity (s)</option>
+                  <option value="Luar">Weight Luar (g)</option>
+                  <option value="Tengah">Weight Tengah (g)</option>
+                  <option value="Dalam">Weight Dalam (g)</option>
+                  <option value="Total">Total Weight (g)</option>
+              </select>
+          </div>
           <div class="chart-container">
               <canvas id="myChart"></canvas>
           </div>
+          
+          <div id="ucl-chart-container" style="display: none;">
+              <div class="chart-controls exclude-on-print">
+                  <label for="ucl-param-select">Tampilkan Control Chart untuk: </label>
+                  <select id="ucl-param-select">
+                      <option value="Water">Water (g)</option>
+                      <option value="Density">Density (g)</option>
+                      <option value="Viscosity">Viscosity (s)</option>
+                      <option value="Luar">Weight Luar (g)</option>
+                      <option value="Tengah">Weight Tengah (g)</option>
+                      <option value="Dalam">Weight Dalam (g)</option>
+                      <option value="Total" selected>Total Weight (g)</option>
+                  </select>
+              </div>
+              <div class="control-chart-container">
+                  <h3 style="text-align: center; color: #1a2a44;">UCL/LCL Control Chart (Historical Trend)</h3>
+                  <canvas id="controlChart" class="control-chart-canvas"></canvas>
+              </div>
+          </div>
         </div>
-      </div>
-  
-      <div class="btn-container">
-        <button onclick="calculate()" id="calculateBtn">CALCULATE AVERAGE</button>
-        <button id="saveBtn" onclick="saveReport()">SAVE REPORT</button>
-        <div class="dropdown">
-            <button class="dropbtn" onclick="toggleDropdown()">PRINT REPORT</button>
-            <div id="printOptions" class="dropdown-content">
-                <a href="#" onclick="downloadPNG()">PNG</a>
-                <a href="#" onclick="downloadPDF()">PDF</a>
-            </div>
+
+        <div class="btn-container exclude-on-print">
+          <button onclick="calculate()" id="calculateBtn">CALCULATE AVERAGE</button>
+          <button id="saveBtn" onclick="saveReport()">SAVE REPORT</button>
+          <div class="dropdown">
+              <button class="dropbtn" onclick="toggleDropdown()">PRINT REPORT</button>
+              <div id="printOptions" class="dropdown-content">
+                  <a href="#" onclick="downloadPNG()">PNG</a>
+                  <a href="#" onclick="printReport()">PDF</a>
+              </div>
+          </div>
+          <div class="dropdown">
+              <button class="dropbtn" onclick="toggleLoadDropdown()">LOAD REPORT</button>
+              <div id="loadOptions" class="dropdown-content"></div>
+          </div>
+          <button id="standardsBtn" onclick="toggleStandardsView()">SET STANDARDS</button>
+          <button id="showChartsBtn" onclick="toggleControlCharts()">SHOW CONTROL CHARTS</button>
+          <button id="resetBtn" onclick="resetData()">RESET</button>
         </div>
-        <div class="dropdown">
-            <button class="dropbtn" onclick="toggleLoadDropdown()">LOAD REPORT</button>
-            <div id="loadOptions" class="dropdown-content"></div>
-        </div>
-        <button id="resetBtn" onclick="resetData()">RESET</button>
       </div>
     </div>
   </div>
@@ -436,13 +617,311 @@
     <p>Silakan gunakan desktop/laptop atau aktifkan "Situs Desktop" pada browser Anda.</p>
   </div>
   
+  <div id="standards-setting-overlay" class="standards-setting-overlay" style="display:none;">
+    <div class="standards-setting-container">
+        <h2>STANDARDS SETTING</h2>
+        <p>Atur Batas Spesifikasi (LSL/USL) untuk Perhitungan Status Lulus/Gagal. Atur LSL dan USL menjadi 0 jika parameter tidak relevan.</p>
+        
+        <table id="standards-table" class="report-table" style="table-layout: auto;">
+            <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Target</th>
+                    <th>LSL (Min)</th>
+                    <th>USL (Max)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Water (g)</td><td><input type="number" id="stdTargetWater" value="0" step="0.01"></td><td><input type="number" id="stdLSLWater" value="0" step="0.01"></td><td><input type="number" id="stdUSLWater" value="0" step="0.01"></td></tr>
+                <tr><td>Density (g)</td><td><input type="number" id="stdTargetDensity" value="0" step="0.01"></td><td><input type="number" id="stdLSLDensity" value="0" step="0.01"></td><td><input type="number" id="stdUSLDensity" value="0" step="0.01"></td></tr>
+                <tr><td>Viscosity (s)</td><td><input type="number" id="stdTargetViscosity" value="0" step="0.01"></td><td><input type="number" id="stdLSLViscosity" value="0" step="0.01"></td><td><input type="number" id="stdUSLViscosity" value="0" step="0.01"></td></tr>
+                <tr><td>Weight Luar (g)</td><td><input type="number" id="stdTargetLuar" value="0" step="0.01"></td><td><input type="number" id="stdLSLLuar" value="0" step="0.01"></td><td><input type="number" id="stdUSLLuar" value="0" step="0.01"></td></tr>
+                <tr><td>Weight Tengah (g)</td><td><input type="number" id="stdTargetTengah" value="0" step="0.01"></td><td><input type="number" id="stdUSLTengah" value="0" step="0.01"></td><td><input type="number" id="stdUSLTengah" value="0" step="0.01"></td></tr>
+                <tr><td>Weight Dalam (g)</td><td><input type="number" id="stdTargetDalam" value="0" step="0.01"></td><td><input type="number" id="stdLSLDalam" value="0" step="0.01"></td><td><input type="number" id="stdUSLDalam" value="0" step="0.01"></td></tr>
+                <tr><td>Total Weight (g)</td><td><input type="number" id="stdTargetTotal" value="0" step="0.01"></td><td><input type="number" id="stdLSLTotal" value="0" step="0.01"></td><td><input type="number" id="stdUSLTotal" value="0" step="0.01"></td></tr>
+            </tbody>
+        </table>
+        
+        <div class="btn-container exclude-on-print">
+            <button onclick="saveStandards()">SAVE STANDARDS</button>
+            <button onclick="toggleStandardsView()">CLOSE</button>
+        </div>
+    </div>
+  </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
     const tableBody = document.getElementById("table-body");
+    
+    const DEFAULT_STANDARDS = {
+        Water: { target: 0, lsl: 0, usl: 0 },
+        Density: { target: 0, lsl: 0, usl: 0 },
+        Viscosity: { target: 0, lsl: 0, usl: 0 },
+        Luar: { target: 0, lsl: 0, usl: 0 },
+        Tengah: { target: 0, lsl: 0, usl: 0 },
+        Dalam: { target: 0, lsl: 0, usl: 0 },
+        Total: { target: 0, lsl: 0, usl: 0 }
+    };
+    const PARAMETERS = ["Water", "Density", "Viscosity", "Luar", "Tengah", "Dalam", "Total"];
+    
+    const CONTROL_CHART_HISTORY_LIMIT = 20; 
+    
+    function getHistoricalData(parameterId, lineId) {
+        const reportKeys = Object.keys(localStorage)
+                                .filter(key => key.startsWith('glaze_report_'))
+                                .sort()
+                                .slice(-CONTROL_CHART_HISTORY_LIMIT); 
+        
+        const historicalData = [];
+        const labels = [];
+        const resultId = `avg${parameterId}${lineId}`;
 
-    // buat 12 baris jam default
+        reportKeys.forEach(key => {
+            const storedData = localStorage.getItem(key);
+            if (storedData) {
+                const reportData = JSON.parse(storedData);
+                const result = reportData.resultsData[resultId];
+                if (result && result.value !== '-') {
+                    historicalData.push(parseFloat(result.value));
+                    const label = reportData.tanggal ? `${reportData.tanggal.substring(5)} (${reportData.grup}${reportData.shift})` : "No Date";
+                    labels.push(label);
+                }
+            }
+        });
+
+        return { data: historicalData, labels: labels };
+    }
+
+    function calculateUCL_LCL(data) {
+        if (data.length < 2) {
+            return { CL: null, UCL: null, LCL: null };
+        }
+        
+        const sum = data.reduce((a, b) => a + b, 0);
+        const mean = sum / data.length;
+        
+        const squaredDifferences = data.map(val => (val - mean) ** 2);
+        const variance = squaredDifferences.reduce((a, b) => a + b, 0) / (data.length - 1); 
+        const stdDev = Math.sqrt(variance);
+        
+        const UCL = mean + (3 * stdDev);
+        const LCL = mean - (3 * stdDev);
+        
+        return { 
+            CL: mean.toFixed(2), 
+            UCL: UCL.toFixed(2), 
+            LCL: LCL > 0 ? LCL.toFixed(2) : (0).toFixed(2) 
+        };
+    }
+
+    let myControlChart;
+
+    function createControlChart(parameterId) {
+        if (myControlChart) {
+            myControlChart.destroy();
+        }
+        
+        const historical2A = getHistoricalData(parameterId, '2A');
+        const historical2B = getHistoricalData(parameterId, '2B');
+        
+        const stats2A = calculateUCL_LCL(historical2A.data);
+        const stats2B = calculateUCL_LCL(historical2B.data);
+        
+        const chartId = 'controlChart';
+        const ctx = document.getElementById(chartId).getContext('2d');
+        
+        const dataDatasets = [];
+        const labels = historical2A.labels;
+
+        if (historical2A.data.length >= 2) {
+            const UCL_val_A = parseFloat(stats2A.UCL);
+            const LCL_val_A = parseFloat(stats2A.LCL);
+            dataDatasets.push({
+                label: `Line 2A Avg (Data)`,
+                data: historical2A.data,
+                borderColor: '#007bff',
+                pointBackgroundColor: historical2A.data.map(val => (val > UCL_val_A || val < LCL_val_A) ? '#dc3545' : '#28a745'),
+                pointRadius: 5,
+                tension: 0.1,
+                fill: false,
+                lineTension: 0
+            },
+            {
+                label: `Line 2A UCL (${stats2A.UCL})`,
+                data: historical2A.data.map(() => UCL_val_A),
+                borderColor: 'rgba(0,123,255,0.5)', borderDash: [5, 5], pointRadius: 0, fill: false
+            },
+            {
+                label: `Line 2A LCL (${stats2A.LCL})`,
+                data: historical2A.data.map(() => LCL_val_A),
+                borderColor: 'rgba(0,123,255,0.5)', borderDash: [5, 5], pointRadius: 0, fill: false
+            },
+            {
+                label: `Line 2A CL (${stats2A.CL})`,
+                data: historical2A.data.map(() => parseFloat(stats2A.CL)),
+                borderColor: 'rgba(0,123,255,0.5)', pointRadius: 0, fill: false
+            });
+        }
+        
+        if (historical2B.data.length >= 2) {
+            const UCL_val_B = parseFloat(stats2B.UCL);
+            const LCL_val_B = parseFloat(stats2B.LCL);
+            dataDatasets.push({
+                label: `Line 2B Avg (Data)`,
+                data: historical2B.data,
+                borderColor: '#ffc107',
+                pointBackgroundColor: historical2B.data.map(val => (val > UCL_val_B || val < LCL_val_B) ? '#dc3545' : '#28a745'),
+                pointRadius: 5,
+                tension: 0.1,
+                fill: false,
+                lineTension: 0
+            },
+            {
+                label: `Line 2B UCL (${stats2B.UCL})`,
+                data: historical2B.data.map(() => UCL_val_B),
+                borderColor: 'rgba(255,193,7,0.5)', borderDash: [5, 5], pointRadius: 0, fill: false
+            },
+            {
+                label: `Line 2B LCL (${stats2B.LCL})`,
+                data: historical2B.data.map(() => LCL_val_B),
+                borderColor: 'rgba(255,193,7,0.5)', borderDash: [5, 5], pointRadius: 0, fill: false
+            },
+            {
+                label: `Line 2B CL (${stats2B.CL})`,
+                data: historical2B.data.map(() => parseFloat(stats2B.CL)),
+                borderColor: 'rgba(255,193,7,0.5)', pointRadius: 0, fill: false
+            });
+        }
+
+        const paramTitle = document.getElementById('ucl-param-select').options[document.getElementById('ucl-param-select').selectedIndex].text;
+        
+        if (dataDatasets.length === 0) {
+            const chartData = { type: 'line', data: { labels: [], datasets: [] }, options: { 
+                responsive: true, maintainAspectRatio: false,
+                plugins: { 
+                    title: { 
+                        display: true, 
+                        text: `Tidak Cukup Data (Min. 2 Laporan Tersimpan) untuk Parameter: ${paramTitle}`, 
+                        color: '#dc3545',
+                        font: { size: 14 }
+                    } 
+                } 
+            } };
+            myControlChart = new Chart(ctx, chartData);
+            return;
+        }
+
+        myControlChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: dataDatasets
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: false, title: { display: true, text: paramTitle } },
+                    x: { title: { display: true, text: `Laporan Historis (N=${labels.length})` } }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: `Control Chart ${paramTitle} (Historical Trend)`,
+                        font: { size: 16, weight: 'bold' }
+                    }
+                }
+            }
+        });
+    }
+
+    function toggleControlCharts() {
+        const uclContainer = document.getElementById('ucl-chart-container');
+        const button = document.getElementById('showChartsBtn');
+
+        if (uclContainer.style.display === 'none' || uclContainer.style.display === '') {
+            uclContainer.style.display = 'block';
+            
+            const selectedParam = document.getElementById('ucl-param-select').value;
+            createControlChart(selectedParam);
+
+            button.textContent = 'HIDE CONTROL CHARTS';
+        } else {
+            uclContainer.style.display = 'none';
+            if (myControlChart) {
+                myControlChart.destroy();
+            }
+            button.textContent = 'SHOW CONTROL CHARTS';
+        }
+    }
+    
+    function loadStandards() {
+        const storedStandards = localStorage.getItem('glaze_standards');
+        return storedStandards ? JSON.parse(storedStandards) : DEFAULT_STANDARDS;
+    }
+    
+    function checkStatus(value, standards) {
+        if (value === null || isNaN(value)) {
+            return '';
+        }
+        const { lsl, usl } = standards;
+        
+        if (lsl === 0 && usl === 0) {
+            return 'font-weight: bold;'; 
+        }
+
+        if (value >= lsl && value <= usl) {
+            return 'status-lulus';
+        } else {
+            return 'status-gagal';
+        }
+    }
+    
+    function displayStandards() {
+        const standards = loadStandards();
+        PARAMETERS.forEach(param => {
+            document.getElementById(`stdTarget${param}`).value = standards[param].target.toFixed(2);
+            document.getElementById(`stdLSL${param}`).value = standards[param].lsl.toFixed(2);
+            document.getElementById(`stdUSL${param}`).value = standards[param].usl.toFixed(2);
+        });
+    }
+
+    function saveStandards() {
+        const newStandards = {};
+        let allStandardsValid = true;
+
+        PARAMETERS.forEach(param => {
+            const lsl = parseFloat(document.getElementById(`stdLSL${param}`).value) || 0;
+            const usl = parseFloat(document.getElementById(`stdUSL${param}`).value) || 0;
+            const target = parseFloat(document.getElementById(`stdTarget${param}`).value) || 0;
+
+            if (lsl > usl) {
+                alert(`Peringatan: LSL (${lsl}) tidak boleh lebih besar dari USL (${usl}) untuk parameter ${param}. Harap perbaiki.`);
+                allStandardsValid = false;
+            }
+
+            newStandards[param] = { target: target, lsl: lsl, usl: usl }; 
+        });
+
+        if (allStandardsValid) {
+            localStorage.setItem('glaze_standards', JSON.stringify(newStandards));
+            alert('Pengaturan Standar berhasil disimpan!');
+            toggleStandardsView();
+            calculate(); 
+        }
+    }
+
+    function toggleStandardsView() {
+        const overlay = document.getElementById("standards-setting-overlay");
+        if (overlay.style.display === "none" || overlay.style.display === "") {
+            displayStandards();
+            overlay.style.display = "flex";
+            document.getElementById("desktop-content").style.filter = "blur(3px)";
+        } else {
+            overlay.style.display = "none";
+            document.getElementById("desktop-content").style.filter = "none";
+        }
+    }
+    
     for (let i = 1; i <= 12; i++) {
       const row = document.createElement("tr");
       row.innerHTML = `
@@ -465,7 +944,6 @@
       tableBody.appendChild(row);
     }
     
-    // Fungsi untuk perhitungan langsung
     function liveCalculate(rowId, line) {
         const luar = parseFloat(document.getElementById(`luar${line}-${rowId}`).value) || 0;
         const tengah = parseFloat(document.getElementById(`tengah${line}-${rowId}`).value) || 0;
@@ -480,7 +958,6 @@
         }
     }
 
-    // fungsi update jam sesuai shift
     function updateJam() {
       const shift = document.getElementById("shift").value;
       const jamCells = document.querySelectorAll("#table-body .jam-cell");
@@ -496,15 +973,15 @@
 
     document.getElementById("shift").addEventListener("change", updateJam);
 
-    // jalankan sekali saat awal
     updateJam();
 
-    // hitung rata-rata
     function calculate() {
         const calculateBtn = document.getElementById('calculateBtn');
         const originalText = calculateBtn.textContent;
         calculateBtn.textContent = 'Menghitung...';
         calculateBtn.disabled = true;
+
+        const standards = loadStandards();
 
         setTimeout(() => {
             const lines = ["2A", "2B"];
@@ -533,62 +1010,84 @@
                         count++;
                     }
                 }
-    
-                document.getElementById(`avgWater${line}`).textContent = count ? (totalWater / count).toFixed(2) : "-";
-                document.getElementById(`avgDensity${line}`).textContent = count ? (totalDensity / count).toFixed(2) : "-";
-                document.getElementById(`avgViscosity${line}`).textContent = count ? (totalViscosity / count).toFixed(2) : "-";
-                document.getElementById(`avgLuar${line}`).textContent = count ? (totalLuar / count).toFixed(2) : "-";
-                document.getElementById(`avgTengah${line}`).textContent = count ? (totalTengah / count).toFixed(2) : "-";
-                document.getElementById(`avgDalam${line}`).textContent = count ? (totalDalam / count).toFixed(2) : "-";
-                document.getElementById(`avgTotal${line}`).textContent = count ? ((totalLuar + totalTengah + totalDalam) / (3 * count)).toFixed(2) : "-";
+                
+                const avgWater = count ? (totalWater / count).toFixed(2) : "-";
+                document.getElementById(`avgWater${line}`).textContent = avgWater;
+                document.getElementById(`avgWater${line}`).className = checkStatus(parseFloat(avgWater), standards.Water);
+
+                const avgDensity = count ? (totalDensity / count).toFixed(2) : "-";
+                document.getElementById(`avgDensity${line}`).textContent = avgDensity;
+                document.getElementById(`avgDensity${line}`).className = checkStatus(parseFloat(avgDensity), standards.Density);
+                
+                const avgViscosity = count ? (totalViscosity / count).toFixed(2) : "-";
+                document.getElementById(`avgViscosity${line}`).textContent = avgViscosity;
+                document.getElementById(`avgViscosity${line}`).className = checkStatus(parseFloat(avgViscosity), standards.Viscosity);
+                
+                const avgLuar = count ? (totalLuar / count).toFixed(2) : "-";
+                document.getElementById(`avgLuar${line}`).textContent = avgLuar;
+                document.getElementById(`avgLuar${line}`).className = checkStatus(parseFloat(avgLuar), standards.Luar);
+                
+                const avgTengah = count ? (totalTengah / count).toFixed(2) : "-";
+                document.getElementById(`avgTengah${line}`).textContent = avgTengah;
+                document.getElementById(`avgTengah${line}`).className = checkStatus(parseFloat(avgTengah), standards.Tengah);
+                
+                const avgDalam = count ? (totalDalam / count).toFixed(2) : "-";
+                document.getElementById(`avgDalam${line}`).textContent = avgDalam;
+                document.getElementById(`avgDalam${line}`).className = checkStatus(parseFloat(avgDalam), standards.Dalam);
+                
+                const avgTotal = count ? ((totalLuar + totalTengah + totalDalam) / (3 * count)).toFixed(2) : "-";
+                document.getElementById(`avgTotal${line}`).textContent = avgTotal;
+                document.getElementById(`avgTotal${line}`).className = checkStatus(parseFloat(avgTotal), standards.Total);
+
             });
-            createChart();
+            
+            updateChartSelection();
 
             calculateBtn.textContent = originalText;
             calculateBtn.disabled = false;
-        }, 500); // Penundaan 0.5 detik untuk efek visual
+        }, 500); 
     }
 
-    // Fungsi untuk mereset data
     function resetData() {
-        // Reset input fields
         const inputFields = document.querySelectorAll('#table-body input[type="number"]');
         inputFields.forEach(input => {
             input.value = '';
         });
 
-        // Reset avg cells
         const avgCells = document.querySelectorAll('#table-body td[id^="avg"]');
         avgCells.forEach(cell => {
             cell.textContent = '-';
         });
 
-        // Reset summary table
         const summaryCells = document.querySelectorAll('#result-table td[id^="avg"]');
         summaryCells.forEach(cell => {
             cell.textContent = '-';
+            cell.className = '';
         });
         
-        // Reset chart
-        createChart();
+        updateChartSelection();
+        
+        document.getElementById('ucl-chart-container').style.display = 'none';
+        
+        document.getElementById('showChartsBtn').textContent = 'SHOW CONTROL CHARTS';
     }
     
-    // Fungsi untuk menampilkan/menyembunyikan dropdown
     function toggleDropdown() {
         document.getElementById("printOptions").classList.toggle("show");
     }
 
-    // --- FUNGSI UNTUK MANAJEMEN DATA ---
     function saveReport() {
         const tanggal = document.getElementById("tanggal").value;
         const grup = document.getElementById("grup").value;
         const shift = document.getElementById("shift").value;
-        const judul = document.getElementById("report-title-select").value; // Mengambil nilai dari dropdown judul
+        const judul = document.getElementById("report-title-select").value;
 
         if (!tanggal) {
             alert("Tanggal harus diisi sebelum menyimpan laporan.");
             return;
         }
+
+        calculate();
 
         const reportData = {
             judul: judul,
@@ -609,7 +1108,10 @@
 
         const resultCells = document.querySelectorAll('#result-table td[id^="avg"]');
         resultCells.forEach(cell => {
-            reportData.resultsData[cell.id] = cell.textContent;
+            reportData.resultsData[cell.id] = {
+                value: cell.textContent,
+                className: cell.className
+            };
         });
 
         const key = `glaze_report_${tanggal}_${grup}_shift${shift}_${judul.replace(/\s/g, '-')}`;
@@ -628,7 +1130,7 @@
 
         const reportData = JSON.parse(storedData);
 
-        document.getElementById("report-title-select").value = reportData.judul; // Memuat nilai judul
+        document.getElementById("report-title-select").value = reportData.judul;
         document.getElementById("tanggal").value = reportData.tanggal;
         document.getElementById("grup").value = reportData.grup;
         document.getElementById("shift").value = reportData.shift;
@@ -644,11 +1146,12 @@
         for (const id in reportData.resultsData) {
             const cell = document.getElementById(id);
             if (cell) {
-                cell.textContent = reportData.resultsData[id];
+                cell.textContent = reportData.resultsData[id].value;
+                cell.className = reportData.resultsData[id].className; 
             }
         }
         
-        calculate();
+        calculate(); 
         alert("Laporan berhasil dimuat!");
     }
 
@@ -664,7 +1167,7 @@
         const dropdown = document.getElementById("loadOptions");
         dropdown.innerHTML = '';
 
-        const reportKeys = Object.keys(localStorage).filter(key => key.startsWith('glaze_report_'));
+        const reportKeys = Object.keys(localStorage).filter(key => key.startsWith('glaze_report_')).sort((a, b) => b.localeCompare(a)); 
 
         if (reportKeys.length === 0) {
             dropdown.innerHTML = '<a href="#" class="disabled">Tidak ada laporan tersimpan</a>';
@@ -705,9 +1208,8 @@
         document.getElementById("loadOptions").classList.toggle("show");
     }
     
-    // Tutup dropdown jika user klik di luar menu
     window.onclick = function(event) {
-        if (!event.target.matches('.dropbtn')) {
+        if (!event.target.matches('.dropbtn') && !event.target.matches('#standardsBtn')) {
             const dropdowns = document.getElementsByClassName("dropdown-content");
             for (let i = 0; i < dropdowns.length; i++) {
                 const openDropdown = dropdowns[i];
@@ -718,87 +1220,98 @@
         }
     }
 
-    // Fungsi untuk menambahkan watermark
-    function addWatermark() {
-        const watermarkDiv = document.getElementById("report-watermark");
-        const now = new Date();
-        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
-        const dateTimeString = now.toLocaleDateString('id-ID', options);
-        watermarkDiv.textContent = `${dateTimeString} | ©https://xprilhxn.github.io/GL-Report/ ${now.getFullYear()}`;
-    }
-
-    // download png
     function downloadPNG() {
       const content = document.getElementById("printable-area"); 
-      addWatermark();
+      const elementsToExclude = document.querySelectorAll('.exclude-on-print');
+      
+      elementsToExclude.forEach(el => el.style.display = 'none');
 
       html2canvas(content, { scale: 2 }).then(canvas => {
         const link = document.createElement("a");
         link.download = "AprilhxnProject-GL-Report.png";
         link.href = canvas.toDataURL("image/png");
         link.click();
+        
+        elementsToExclude.forEach(el => el.style.display = ''); 
       });
       document.getElementById("printOptions").classList.remove("show");
     }
-
-    // download pdf
-    function downloadPDF() {
-      const { jsPDF } = window.jspdf;
-      const content = document.getElementById("printable-area");
-      addWatermark();
-
-      html2canvas(content, { 
-        scale: 2,
-        windowWidth: content.scrollWidth,
-        windowHeight: content.scrollHeight
-      }).then(canvas => {
-        const imgData = canvas.toDataURL('image/jpeg', 1.0);
-        const pdf = new jsPDF('p', 'mm', 'a4');
-        const imgWidth = pdf.internal.pageSize.getWidth();
-        const pageHeight = pdf.internal.pageSize.getHeight();
-        const imgHeight = canvas.height * imgWidth / canvas.width;
-        let heightLeft = imgHeight;
-        let position = 0;
-
-        pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
-        heightLeft -= pageHeight;
-
-        while (heightLeft > 0) {
-            position = heightLeft * -1;
-            pdf.addPage();
-            pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
-            heightLeft -= pageHeight;
-        }
-
-        pdf.save("laporan-glazure.pdf");
-      });
+    
+    function printReport() {
+      window.print();
       document.getElementById("printOptions").classList.remove("show");
     }
 
-    let myChart; // Variabel global untuk menyimpan instance grafik
+    let myChart;
 
-    function createChart() {
-      const labels = ["Water (g)", "Density (g)", "Viscosity (s)", "Weight Luar (g)", "Weight Tengah (g)", "Weight Dalam (g)", "Total Weight (g)"];
+    function updateChartSelection() {
+        const selectedParam = document.getElementById('chart-param-select').value;
+        createChart(selectedParam);
+    }
+    
+    function createChart(selectedParam = "All") {
+      const allLabels = ["Water (g)", "Density (g)", "Viscosity (s)", "Weight Luar (g)", "Weight Tengah (g)", "Weight Dalam (g)", "Total Weight (g)"];
+      const paramKeys = ["avgWater", "avgDensity", "avgViscosity", "avgLuar", "avgTengah", "avgDalam", "avgTotal"];
+
+      const rawData2A = [
+          document.getElementById('avgWater2A').textContent,
+          document.getElementById('avgDensity2A').textContent,
+          document.getElementById('avgViscosity2A').textContent,
+          document.getElementById('avgLuar2A').textContent,
+          document.getElementById('avgTengah2A').textContent,
+          document.getElementById('avgDalam2A').textContent,
+          document.getElementById('avgTotal2A').textContent,
+      ].map(val => isNaN(parseFloat(val)) ? 0 : parseFloat(val));
+
+      const rawData2B = [
+          document.getElementById('avgWater2B').textContent,
+          document.getElementById('avgDensity2B').textContent,
+          document.getElementById('avgViscosity2B').textContent,
+          document.getElementById('avgLuar2B').textContent,
+          document.getElementById('avgTengah2B').textContent,
+          document.getElementById('avgDalam2B').textContent,
+          document.getElementById('avgTotal2B').textContent,
+      ].map(val => isNaN(parseFloat(val)) ? 0 : parseFloat(val));
       
-      const data2A = [
-          parseFloat(document.getElementById('avgWater2A').textContent),
-          parseFloat(document.getElementById('avgDensity2A').textContent),
-          parseFloat(document.getElementById('avgViscosity2A').textContent),
-          parseFloat(document.getElementById('avgLuar2A').textContent),
-          parseFloat(document.getElementById('avgTengah2A').textContent),
-          parseFloat(document.getElementById('avgDalam2A').textContent),
-          parseFloat(document.getElementById('avgTotal2A').textContent),
-      ].map(val => isNaN(val) ? 0 : val);
+      let labels = allLabels;
+      let datasets = [];
 
-      const data2B = [
-          parseFloat(document.getElementById('avgWater2B').textContent),
-          parseFloat(document.getElementById('avgDensity2B').textContent),
-          parseFloat(document.getElementById('avgViscosity2B').textContent),
-          parseFloat(document.getElementById('avgLuar2B').textContent),
-          parseFloat(document.getElementById('avgTengah2B').textContent),
-          parseFloat(document.getElementById('avgDalam2B').textContent),
-          parseFloat(document.getElementById('avgTotal2B').textContent),
-      ].map(val => isNaN(val) ? 0 : val);
+      if (selectedParam === "All") {
+          datasets = [{
+              label: 'Line 2A',
+              data: rawData2A,
+              backgroundColor: 'rgba(54, 162, 235, 0.6)',
+              borderColor: 'rgba(54, 162, 235, 1)',
+              borderWidth: 1
+          }, {
+              label: 'Line 2B',
+              data: rawData2B,
+              backgroundColor: 'rgba(255, 99, 132, 0.6)',
+              borderColor: 'rgba(255, 99, 132, 1)',
+              borderWidth: 1
+          }];
+      } else {
+          const paramIndex = PARAMETERS.indexOf(selectedParam);
+          if (paramIndex !== -1) {
+              labels = [allLabels[paramIndex]];
+              const dataA = [rawData2A[paramIndex]];
+              const dataB = [rawData2B[paramIndex]];
+              
+              datasets = [{
+                  label: `Line 2A (${selectedParam})`,
+                  data: dataA,
+                  backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                  borderColor: 'rgba(54, 162, 235, 1)',
+                  borderWidth: 1
+              }, {
+                  label: `Line 2B (${selectedParam})`,
+                  data: dataB,
+                  backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                  borderColor: 'rgba(255, 99, 132, 1)',
+                  borderWidth: 1
+              }];
+          }
+      }
       
       const ctx = document.getElementById('myChart').getContext('2d');
       
@@ -810,19 +1323,7 @@
           type: 'bar',
           data: {
               labels: labels,
-              datasets: [{
-                  label: 'Line 2A',
-                  data: data2A,
-                  backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                  borderColor: 'rgba(54, 162, 235, 1)',
-                  borderWidth: 1
-              }, {
-                  label: 'Line 2B',
-                  data: data2B,
-                  backgroundColor: 'rgba(255, 99, 132, 0.6)',
-                  borderColor: 'rgba(255, 99, 132, 1)',
-                  borderWidth: 1
-              }]
+              datasets: datasets
           },
           options: {
               responsive: true,
@@ -835,7 +1336,7 @@
               plugins: {
                   title: {
                       display: true,
-                      text: 'COMPARISON OF AVERAGE PARAMETERS',
+                      text: `COMPARISON OF AVERAGE PARAMETERS`,
                       font: {
                         size: 16,
                         weight: 'bold'
@@ -846,9 +1347,18 @@
       });
     }
 
-    // Panggil fungsi createChart() saat halaman dimuat
     window.addEventListener('load', createChart);
+    window.addEventListener('load', displayStandards); 
     document.addEventListener('DOMContentLoaded', populateLoadDropdown);
+
+    document.getElementById('chart-param-select').addEventListener('change', updateChartSelection);
+    document.getElementById('ucl-param-select').addEventListener('change', function() {
+        const uclContainer = document.getElementById('ucl-chart-container');
+        if (uclContainer.style.display !== 'none') {
+             const selectedParam = this.value;
+             createControlChart(selectedParam);
+        }
+    });
   </script>
 </body>
 </html>
