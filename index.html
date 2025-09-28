@@ -636,7 +636,7 @@
                 <tr><td>Density (g)</td><td><input type="number" id="stdTargetDensity" value="0" step="0.01"></td><td><input type="number" id="stdLSLDensity" value="0" step="0.01"></td><td><input type="number" id="stdUSLDensity" value="0" step="0.01"></td></tr>
                 <tr><td>Viscosity (s)</td><td><input type="number" id="stdTargetViscosity" value="0" step="0.01"></td><td><input type="number" id="stdLSLViscosity" value="0" step="0.01"></td><td><input type="number" id="stdUSLViscosity" value="0" step="0.01"></td></tr>
                 <tr><td>Weight Luar (g)</td><td><input type="number" id="stdTargetLuar" value="0" step="0.01"></td><td><input type="number" id="stdLSLLuar" value="0" step="0.01"></td><td><input type="number" id="stdUSLLuar" value="0" step="0.01"></td></tr>
-                <tr><td>Weight Tengah (g)</td><td><input type="number" id="stdTargetTengah" value="0" step="0.01"></td><td><input type="number" id="stdUSLTengah" value="0" step="0.01"></td><td><input type="number" id="stdUSLTengah" value="0" step="0.01"></td></tr>
+                <tr><td>Weight Tengah (g)</td><td><input type="number" id="stdTargetTengah" value="0" step="0.01"></td><td><input type="number" id="stdLSLTengah" value="0" step="0.01"></td><td><input type="number" id="stdUSLTengah" value="0" step="0.01"></td></tr>
                 <tr><td>Weight Dalam (g)</td><td><input type="number" id="stdTargetDalam" value="0" step="0.01"></td><td><input type="number" id="stdLSLDalam" value="0" step="0.01"></td><td><input type="number" id="stdUSLDalam" value="0" step="0.01"></td></tr>
                 <tr><td>Total Weight (g)</td><td><input type="number" id="stdTargetTotal" value="0" step="0.01"></td><td><input type="number" id="stdLSLTotal" value="0" step="0.01"></td><td><input type="number" id="stdUSLTotal" value="0" step="0.01"></td></tr>
             </tbody>
@@ -879,9 +879,12 @@
     function displayStandards() {
         const standards = loadStandards();
         PARAMETERS.forEach(param => {
-            document.getElementById(`stdTarget${param}`).value = standards[param].target.toFixed(2);
-            document.getElementById(`stdLSL${param}`).value = standards[param].lsl.toFixed(2);
-            document.getElementById(`stdUSL${param}`).value = standards[param].usl.toFixed(2);
+            const targetEl = document.getElementById(`stdTarget${param}`);
+            const lslEl = document.getElementById(`stdLSL${param}`);
+            const uslEl = document.getElementById(`stdUSL${param}`);
+            if (targetEl) targetEl.value = standards[param].target.toFixed(2);
+            if (lslEl) lslEl.value = standards[param].lsl.toFixed(2);
+            if (uslEl) uslEl.value = standards[param].usl.toFixed(2);
         });
     }
 
